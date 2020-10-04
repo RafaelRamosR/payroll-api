@@ -65,9 +65,14 @@ class CrudRepository
     return (int)$this->connection->lastInsertId();
   }
 
-  public function delete($table, $id)
+  public function delete($id): int
   {
-    $stm = $this->connection->prepare("DELETE FROM " . $table . " WHERE id = ?");
-    $stm->execute(array($id));
+    $query = [
+      'table' => 'users'
+    ];
+    $table = $query['table'];
+    $sql = "DELETE FROM " . $table . " WHERE id  = " . $id;
+    $this->connection->prepare($sql)->execute();
+    return 28;
   }
 }
