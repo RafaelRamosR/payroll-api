@@ -33,13 +33,6 @@ class UserCreatorRepository
    */
   public function insertUser(array $user): int
   {
-    $row = [
-      'username' => $user['username'],
-      'first_name' => $user['first_name'],
-      'last_name' => $user['last_name'],
-      'email' => $user['email'],
-    ];
-
     $sql = "INSERT INTO users SET 
       username=:username, 
       first_name=:first_name, 
@@ -47,7 +40,7 @@ class UserCreatorRepository
       email=:email;
     ";
 
-    $this->connection->prepare($sql)->execute($row);
+    $this->connection->prepare($sql)->execute($user);
 
     return (int)$this->connection->lastInsertId();
   }
