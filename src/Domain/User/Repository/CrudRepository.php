@@ -21,23 +21,28 @@ class CrudRepository
     $this->connection = $connection;
   }
 
-  public function getListOne($query, $id)
+  public function getListOne($id): array
   {
+    $query = [
+      'table' => 'users'
+    ];
     $table = $query['table'];
-    $stm = $this->pdo->prepare("SELECT * FROM " . $table . " WHERE id = ?");
-    $stm->execute($id);
-    return $stm->fetch(PDO::FETCH_OBJ);
+    $sql = "SELECT * FROM " . $table . " WHERE id = ". $id;
+    $stmt = $this->connection->prepare($sql);
+    $stmt->execute();
+    return (array)$stmt->fetch(PDO::FETCH_ASSOC);
   }
 
-  public function getListAll($query)
+  public function getListAll()
   {
+    $query = [
+      'table' => 'users'
+    ];
     $table = $query['table'];
     $sql = "SELECT * FROM " . $table;
-
-    return (int)$this->connection->lastInsertId();
-    $stm = $this->connection->prepare($sql);
-    $stm->execute();
-    return $stm->fetchAll(PDO::FETCH_OBJ);
+    $stmt = $this->connection->prepare($sql);
+    $stmt->execute();
+    return (array)$stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public function create(Array $data): int
