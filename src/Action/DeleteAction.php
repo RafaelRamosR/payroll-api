@@ -20,9 +20,9 @@ final class DeleteAction
     ResponseInterface $response,
     $args
   ): ResponseInterface {
-    // Collect input from the HTTP request
-    //$data = (int)$request->getParsedBody();
+    // Collect input from the arguments array
     $data = $args['id'];
+
     // Invoke the Domain with inputs and retain the result
     $userId = $this->eliminator->deleteData($data);
 
@@ -36,6 +36,6 @@ final class DeleteAction
 
     return $response
       ->withHeader('Content-Type', 'application/json')
-      ->withStatus(201);
+      ->withStatus(200);
   }
 }

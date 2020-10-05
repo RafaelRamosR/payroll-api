@@ -26,11 +26,11 @@ final class CreatorService
   }
 
   /**
-   * Create a new user.
+   * Create a new data.
    *
    * @param array $data The form data
    *
-   * @return int The new user ID
+   * @return int The new data ID
    */
   public function createData(array $data): int
   {
@@ -39,9 +39,6 @@ final class CreatorService
 
     // Insert user
     $userId = $this->repository->create($data);
-
-    // Logging here: User created successfully
-    //$this->logger->info(sprintf('User created successfully: %s', $userId));
 
     return $userId;
   }

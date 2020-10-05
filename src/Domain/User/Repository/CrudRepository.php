@@ -21,6 +21,13 @@ class CrudRepository
     $this->connection = $connection;
   }
 
+  /**
+   * Select a row.
+   *
+   * @param int $id Row id
+   *
+   * @return array Array with all the data in the row
+   */
   public function getListOne($id): array
   {
     $query = [
@@ -33,6 +40,11 @@ class CrudRepository
     return (array)$stmt->fetch(PDO::FETCH_ASSOC);
   }
 
+  /**
+   * Select all rows.
+   *
+   * @return array Array with all table data
+   */
   public function getListAll(): array
   {
     $query = [
@@ -45,27 +57,38 @@ class CrudRepository
     return (array)$stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
+  /**
+   * Insert row.
+   *
+   * @param array $data Values to insert
+   *
+   * @return int The last ID
+   */
   public function create(array $data): int
   {
     $query = [
       'table' => 'users',
-      'columns' => 'username=:username, first_name=:first_name, last_name=:last_name, email=:email',
-      'columns2' => 'username = ?, first_name = ?, last_name = ?, email = ?'
+      'columns' => 'username=:username, first_name=:first_name, last_name=:last_name, email=:email'
     ];
     $table = $query['table'];
     $columns = $query['columns'];
-    //$sql = "INSERT INTO " . $table . " (" . $columns . ") VALUES (?, ?, ?, ?)";
     $sql = "INSERT INTO " . $table . " SET " . $columns;
     $this->connection->prepare($sql)->execute($data);
     return (int)$this->connection->lastInsertId();
   }
 
-  public function update($data)
+  /**
+   * Update row.
+   *
+   * @param array $data Values to update
+   *
+   * @return int The update ID
+   */
+  public function update(array $data): int
   {
     $query = [
       'table' => 'users',
-      'columns' => 'username=:username, first_name=:first_name, last_name=:last_name, email=:email',
-      'columns2' => 'username = ?, first_name = ?, last_name = ?, email = ?'
+      'columns' => 'username=:username, first_name=:first_name, last_name=:last_name, email=:email'
     ];
     $table = $query['table'];
     $columns = $query['columns'];
@@ -75,6 +98,13 @@ class CrudRepository
     return (int)$this->connection->lastInsertId();
   }
 
+  /**
+   * Delete row.
+   *
+   * @param int $id ID of the row to delete
+   *
+   * @return int The deleted ID
+   */
   public function delete($id): int
   {
     $query = [
@@ -83,6 +113,6 @@ class CrudRepository
     $table = $query['table'];
     $sql = "DELETE FROM " . $table . " WHERE id  = " . $id;
     $this->connection->prepare($sql)->execute();
-    return 28;
+    return $id;
   }
 }

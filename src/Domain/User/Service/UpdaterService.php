@@ -26,22 +26,19 @@ final class UpdaterService
   }
 
   /**
-   * Create a new user.
+   * Update a field.
    *
    * @param array $data The form data
    *
-   * @return int The new user ID
+   * @return int The last updated ID
    */
   public function updateData(array $data): int
   {
     // Input validation
     $this->validateNewUser($data);
 
-    // Insert user
+    // Update field
     $userId = $this->repository->update($data);
-
-    // Logging here: User created successfully
-    //$this->logger->info(sprintf('User created successfully: %s', $userId));
 
     return $userId;
   }

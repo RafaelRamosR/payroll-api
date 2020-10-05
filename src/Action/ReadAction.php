@@ -20,8 +20,7 @@ final class ReadAction
     ResponseInterface $response,
     $args
   ): ResponseInterface {
-    // Collect input from the HTTP request
-    //$data = (array)$request->getParsedBody();
+    // Collect input from the arguments array
     $data = $args['data'];
 
     // Invoke the Domain with inputs and retain the result
@@ -35,6 +34,6 @@ final class ReadAction
 
     return $response
       ->withHeader('Content-Type', 'application/json')
-      ->withStatus(201);
+      ->withStatus(200);
   }
 }
