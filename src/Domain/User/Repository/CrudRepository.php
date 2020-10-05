@@ -27,13 +27,13 @@ class CrudRepository
       'table' => 'users'
     ];
     $table = $query['table'];
-    $sql = "SELECT * FROM " . $table . " WHERE id = ". $id;
+    $sql = "SELECT * FROM " . $table . " WHERE id = " . $id;
     $stmt = $this->connection->prepare($sql);
     $stmt->execute();
     return (array)$stmt->fetch(PDO::FETCH_ASSOC);
   }
 
-  public function getListAll()
+  public function getListAll(): array
   {
     $query = [
       'table' => 'users'
@@ -45,7 +45,7 @@ class CrudRepository
     return (array)$stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function create(Array $data): int
+  public function create(array $data): int
   {
     $query = [
       'table' => 'users',
@@ -55,16 +55,21 @@ class CrudRepository
     $table = $query['table'];
     $columns = $query['columns'];
     //$sql = "INSERT INTO " . $table . " (" . $columns . ") VALUES (?, ?, ?, ?)";
-    $sql = "INSERT INTO ". $table ." SET " . $columns;
+    $sql = "INSERT INTO " . $table . " SET " . $columns;
     $this->connection->prepare($sql)->execute($data);
     return (int)$this->connection->lastInsertId();
   }
 
-  public function update($query, $data)
+  public function update($data)
   {
+    $query = [
+      'table' => 'users',
+      'columns' => 'username=:username, first_name=:first_name, last_name=:last_name, email=:email',
+      'columns2' => 'username = ?, first_name = ?, last_name = ?, email = ?'
+    ];
     $table = $query['table'];
     $columns = $query['columns'];
-    $sql = "UPDATE " . $table . " SET " . $columns . " WHERE id = ?";
+    $sql = "UPDATE " . $table . " SET " . $columns . " WHERE id = :id";
 
     $this->connection->prepare($sql)->execute($data);
     return (int)$this->connection->lastInsertId();
