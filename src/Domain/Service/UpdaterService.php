@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Domain\User\Service;
+namespace App\Domain\Service;
 
-use App\Domain\User\Repository\CrudRepository;
+use App\Domain\Repository\CrudRepository;
 
 /**
  * Service.
  */
-final class CreatorService
+final class UpdaterService
 {
   /**
    * @var CrudRepository
@@ -25,16 +25,16 @@ final class CreatorService
   }
 
   /**
-   * Create a new data.
+   * Update a field.
    *
    * @param array $data The form data
    *
-   * @return int The new data ID
+   * @return int The last updated ID
    */
-  public function createData(array $data): int
+  public function updateData(array $data): int
   {
-    // Insert user
-    $userId = $this->repository->create($data);
+    // Update field
+    $userId = $this->repository->update($data);
 
     return $userId;
   }

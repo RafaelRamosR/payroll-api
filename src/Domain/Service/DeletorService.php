@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Domain\User\Service;
+namespace App\Domain\Service;
 
-use App\Domain\User\Repository\CrudRepository;
+use App\Domain\Repository\CrudRepository;
 
 /**
  * Service.
  */
-final class UpdaterService
+final class DeletorService
 {
   /**
    * @var CrudRepository
@@ -25,16 +25,16 @@ final class UpdaterService
   }
 
   /**
-   * Update a field.
+   * Delete a new field.
    *
    * @param array $data The form data
    *
-   * @return int The last updated ID
+   * @return int The last deleted ID
    */
-  public function updateData(array $data): int
+  public function deleteData(int $data): int
   {
-    // Update field
-    $userId = $this->repository->update($data);
+    // Delete field
+    $userId = $this->repository->delete($data);
 
     return $userId;
   }

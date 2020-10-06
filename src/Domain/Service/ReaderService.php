@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Domain\User\Service;
+namespace App\Domain\Service;
 
-use App\Domain\User\Repository\CrudRepository;
-use App\Exception\ValidationException;
+use App\Domain\Repository\CrudRepository;
 
 /**
  * Service.

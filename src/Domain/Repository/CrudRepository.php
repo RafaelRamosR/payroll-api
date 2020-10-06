@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\User\Repository;
+namespace App\Domain\Repository;
 
 use PDO;
 

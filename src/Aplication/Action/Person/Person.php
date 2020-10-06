@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Domain\Person;
+namespace App\Aplication\Action\Person;
 
-use App\Domain\User\Service\CreatorService;
-use App\Domain\User\Service\ReaderService;
-use App\Domain\User\Service\UpdaterService;
-use App\Domain\User\Service\DeletorService;
+use App\Domain\Service\CreatorService;
+use App\Domain\Service\ReaderService;
+use App\Domain\Service\UpdaterService;
+use App\Domain\Service\DeletorService;
 use App\Aplication\lib\Validate;
 use App\Exception\ValidationException;
 use Psr\Http\Message\ResponseInterface;
