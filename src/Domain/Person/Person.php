@@ -2,8 +2,7 @@
 
 namespace App\Domain\Person;
 
-use App\Action\CreateAction as ActionCreateAction;
-use App\Action\CreateAction;
+use App\Domain\User\Service\CreatorService;
 use App\Action\ReadAction;
 use App\Action\UpdateAction;
 use App\Action\DeleteAction;
@@ -18,16 +17,17 @@ final class Person
    * @var Validate
    */
   private $validate;
+  private $creator;
 
   /**
    * The constructor.
    *
    * @param Validate $validate The validate
    */
-  public function __construct(Validate $validate, CreateAction $action)
+  public function __construct(Validate $validate, CreatorService $creator)
   {
     $this->validate = $validate;
-    $this->action = $action;
+    $this->creator = $creator;
   }
 
   public function createData(ServerRequestInterface $request, ResponseInterface $response)
@@ -35,7 +35,21 @@ final class Person
     // Collect input from the HTTP request
     $data = (array)$request->getParsedBody();
     $this->validateData($data);
-    return $this->action->__invoke($data, $response);
+
+    // Invoke the Domain with inputs and retain the result
+    $userId = $this->creator->createData($data);
+
+    // Transform the result into the JSON representation
+    $result = [
+      'user_id' => $userId
+    ];
+
+    // Build the HTTP response
+    $response->getBody()->write((string)json_encode($result));
+
+    return $response
+      ->withHeader('Content-Type', 'application/json')
+      ->withStatus(201);
   }
 
   public function readData(int $id)
@@ -53,7 +67,7 @@ final class Person
     return $this->validateData(array($id));
   }
 
-  public function validateData(array $data)
+  private function validateData(array $data)
   {
     $errors = [];
 
