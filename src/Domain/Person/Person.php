@@ -3,7 +3,7 @@
 namespace App\Domain\Person;
 
 use App\Domain\User\Service\CreatorService;
-use App\Action\ReadAction;
+use App\Domain\User\Service\ReaderService;
 use App\Domain\User\Service\UpdaterService;
 use App\Domain\User\Service\DeletorService;
 use App\Aplication\lib\Validate;
@@ -18,6 +18,7 @@ final class Person
    */
   private $validate;
   private $creator;
+  private $reader;
   private $updater;
   private $deletor;
 
@@ -29,11 +30,13 @@ final class Person
   public function __construct(
     Validate $validate,
     CreatorService $creator,
+    ReaderService $reader,
     UpdaterService $updater,
     DeletorService $deletor
   ) {
     $this->validate = $validate;
     $this->creator = $creator;
+    $this->reader = $reader;
     $this->updater = $updater;
     $this->deletor = $deletor;
   }
@@ -60,9 +63,21 @@ final class Person
       ->withStatus(201);
   }
 
-  public function readData(int $id)
+  public function readData(ServerRequestInterface $request, ResponseInterface $response, array $args)
   {
-    return $this->validateData(array($id));
+    // Collect input from the arguments array
+    $data = $args['data'];
+    $this->validate->alphanumeric($data, 1, 11);
+
+    // Invoke the Domain with inputs and retain the result
+    $result = $this->reader->readData($data);
+
+    // Build the HTTP response
+    $response->getBody()->write((string)json_encode($result));
+
+    return $response
+      ->withHeader('Content-Type', 'application/json')
+      ->withStatus(200);
   }
 
   public function updateData(ServerRequestInterface $request, ResponseInterface $response)
