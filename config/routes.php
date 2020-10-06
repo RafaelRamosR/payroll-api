@@ -8,7 +8,7 @@ return function (App $app) {
   $app->group('/api/v1', function (Group $group) {
     $group->post('/persons', \App\Domain\Person\Person::class . ':createData');
     $group->get('/persons/{data}', \App\Action\ReadAction::class);
-    $group->delete('/persons/{id:[0-9]+}', \App\Action\DeleteAction::class);
+    $group->delete('/persons/{id:[0-9]+}', \App\Domain\Person\Person::class . ':deleteData');
     $group->put('/persons', \App\Domain\Person\Person::class . ':updateData');
   });
 };

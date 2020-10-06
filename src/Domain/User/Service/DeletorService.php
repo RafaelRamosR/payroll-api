@@ -3,12 +3,11 @@
 namespace App\Domain\User\Service;
 
 use App\Domain\User\Repository\CrudRepository;
-use App\Exception\ValidationException;
 
 /**
  * Service.
  */
-final class EliminatorService
+final class DeletorService
 {
   /**
    * @var CrudRepository
