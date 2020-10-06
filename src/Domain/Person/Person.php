@@ -2,11 +2,12 @@
 
 namespace App\Domain\Person;
 
-use App\Domain\Action\CreateAction;
-use App\Domain\Action\ReadAction;
-use App\Domain\Action\UpdateAction;
-use App\Domain\Action\DeleteAction;
-use App\Domain\lib\Validate;
+use App\Action\CreateAction as ActionCreateAction;
+use App\Action\CreateAction;
+use App\Action\ReadAction;
+use App\Action\UpdateAction;
+use App\Action\DeleteAction;
+use App\Aplication\lib\Validate;
 use App\Exception\ValidationException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -23,14 +24,18 @@ final class Person
    *
    * @param Validate $validate The validate
    */
-  public function __construct(Validate $validate)
+  public function __construct(Validate $validate, CreateAction $action)
   {
     $this->validate = $validate;
+    $this->action = $action;
   }
-  public function createData(array $data)
+
+  public function createData(ServerRequestInterface $request, ResponseInterface $response)
   {
+    // Collect input from the HTTP request
+    $data = (array)$request->getParsedBody();
     $this->validateData($data);
-    return $data;
+    return $this->action->__invoke($data, $response);
   }
 
   public function readData(int $id)

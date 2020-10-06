@@ -34,9 +34,6 @@ final class CreatorService
    */
   public function createData(array $data): int
   {
-    // Input validation
-    $this->validateNewUser($data);
-
     // Insert user
     $userId = $this->repository->create($data);
 

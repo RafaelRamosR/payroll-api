@@ -16,11 +16,9 @@ final class CreateAction
   }
 
   public function __invoke(
-    ServerRequestInterface $request,
+    array $data,
     ResponseInterface $response
   ): ResponseInterface {
-    // Collect input from the HTTP request
-    $data = (array)$request->getParsedBody();
 
     // Invoke the Domain with inputs and retain the result
     $userId = $this->creator->createData($data);

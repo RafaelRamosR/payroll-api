@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\lib;
+namespace App\Aplication\lib;
 
 final class Validate
 {
