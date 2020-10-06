@@ -2,10 +2,10 @@
 -- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 06-10-2020 a las 19:21:23
--- Versión del servidor: 8.0.16
--- Versión de PHP: 7.3.8
+-- Server: 127.0.0.1
+-- Generation time: 06-10-2020 a las 19:21:23
+-- Server version: 8.0.16
+-- PHP version: 7.3.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,14 +19,15 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `test`
+-- Database: `test`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `pets`
+-- Table structure for table `pets`
 --
+DROP TABLE IF EXISTS `pets`;
 
 CREATE TABLE `pets` (
   `id` int(11) NOT NULL,
@@ -35,7 +36,7 @@ CREATE TABLE `pets` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `pets`
+-- Data dump for table `pets`
 --
 
 INSERT INTO `pets` (`id`, `name`, `age`) VALUES
@@ -45,8 +46,10 @@ INSERT INTO `pets` (`id`, `name`, `age`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `users`
+-- Table structure for table `users`
 --
+
+DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
@@ -57,7 +60,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `users`
+-- Data dump for table `users`
 --
 
 INSERT INTO `users` (`id`, `username`, `first_name`, `last_name`, `email`) VALUES
@@ -67,8 +70,9 @@ INSERT INTO `users` (`id`, `username`, `first_name`, `last_name`, `email`) VALUE
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `user_pets`
+-- Table structure for table `user_pets`
 --
+DROP TABLE IF EXISTS `user_pets`;
 
 CREATE TABLE `user_pets` (
   `id` int(11) NOT NULL,
@@ -77,7 +81,7 @@ CREATE TABLE `user_pets` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `user_pets`
+-- Data dump for table `user_pets`
 --
 
 INSERT INTO `user_pets` (`id`, `id_user`, `id_pet`) VALUES
@@ -85,23 +89,23 @@ INSERT INTO `user_pets` (`id`, `id_user`, `id_pet`) VALUES
 (2, 2, 2);
 
 --
--- Índices para tablas volcadas
+-- Indexes for overturned tables
 --
 
 --
--- Indices de la tabla `pets`
+-- Table indexes `pets`
 --
 ALTER TABLE `pets`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `users`
+-- Table indexes `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `user_pets`
+-- Table indexes `user_pets`
 --
 ALTER TABLE `user_pets`
   ADD PRIMARY KEY (`id`),
@@ -109,33 +113,33 @@ ALTER TABLE `user_pets`
   ADD UNIQUE KEY `id_pet` (`id_pet`) USING BTREE;
 
 --
--- AUTO_INCREMENT de las tablas volcadas
+-- AUTO_INCREMENT of the tables volcadas
 --
 
 --
--- AUTO_INCREMENT de la tabla `pets`
+-- AUTO_INCREMENT of the table `pets`
 --
 ALTER TABLE `pets`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT de la tabla `users`
+-- AUTO_INCREMENT of the table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT de la tabla `user_pets`
+-- AUTO_INCREMENT of the table `user_pets`
 --
 ALTER TABLE `user_pets`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- Restricciones para tablas volcadas
+-- Restrictions for dumped tables
 --
 
 --
--- Filtros para la tabla `user_pets`
+-- Filters for the table `user_pets`
 --
 ALTER TABLE `user_pets`
   ADD CONSTRAINT `user_pets_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
