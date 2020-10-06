@@ -9,6 +9,6 @@ return function (App $app) {
     $group->post('/persons', \App\Domain\Person\Person::class . ':createData');
     $group->get('/persons/{data}', \App\Action\ReadAction::class);
     $group->delete('/persons/{id:[0-9]+}', \App\Action\DeleteAction::class);
-    $group->put('/persons', \App\Action\UpdateAction::class);
+    $group->put('/persons', \App\Domain\Person\Person::class . ':updateData');
   });
 };

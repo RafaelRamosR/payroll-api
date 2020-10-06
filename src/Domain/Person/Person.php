@@ -4,7 +4,7 @@ namespace App\Domain\Person;
 
 use App\Domain\User\Service\CreatorService;
 use App\Action\ReadAction;
-use App\Action\UpdateAction;
+use App\Domain\User\Service\UpdaterService;
 use App\Action\DeleteAction;
 use App\Aplication\lib\Validate;
 use App\Exception\ValidationException;
@@ -18,16 +18,21 @@ final class Person
    */
   private $validate;
   private $creator;
+  private $updater;
 
   /**
    * The constructor.
    *
    * @param Validate $validate The validate
    */
-  public function __construct(Validate $validate, CreatorService $creator)
-  {
+  public function __construct(
+    Validate $validate,
+    CreatorService $creator,
+    UpdaterService $updater
+  ) {
     $this->validate = $validate;
     $this->creator = $creator;
+    $this->updater = $updater;
   }
 
   public function createData(ServerRequestInterface $request, ResponseInterface $response)
@@ -57,9 +62,27 @@ final class Person
     return $this->validateData(array($id));
   }
 
-  public function updateData(array $data)
+  public function updateData(ServerRequestInterface $request, ResponseInterface $response)
   {
-    return $this->validateData($data);
+    // Collect input from the HTTP request
+    $data = (array)$request->getParsedBody();
+    $this->validate->number($data['id'], 1, 11);
+    $this->validateData($data);
+
+    // Invoke the Domain with inputs and retain the result
+    $userId = $this->updater->updateData($data);
+
+    // Transform the result into the JSON representation
+    $result = [
+      'user_id' => $userId
+    ];
+
+    // Build the HTTP response
+    $response->getBody()->write((string)json_encode($result));
+
+    return $response
+      ->withHeader('Content-Type', 'application/json')
+      ->withStatus(200);
   }
 
   public function deleteData(int $id)
