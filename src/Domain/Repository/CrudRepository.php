@@ -28,11 +28,8 @@ class CrudRepository
    *
    * @return array Array with all the data in the row
    */
-  public function getListOne($id): array
+  public function getListOne(array $query, int $id): array
   {
-    $query = [
-      'table' => 'users'
-    ];
     $table = $query['table'];
     $sql = "SELECT * FROM " . $table . " WHERE id = " . $id;
     $stmt = $this->connection->prepare($sql);
@@ -45,11 +42,8 @@ class CrudRepository
    *
    * @return array Array with all table data
    */
-  public function getListAll(): array
+  public function getListAll($query): array
   {
-    $query = [
-      'table' => 'users'
-    ];
     $table = $query['table'];
     $sql = "SELECT * FROM " . $table;
     $stmt = $this->connection->prepare($sql);
@@ -64,12 +58,8 @@ class CrudRepository
    *
    * @return int The last ID
    */
-  public function create(array $data): int
+  public function create(array $query, array $data): int
   {
-    $query = [
-      'table' => 'users',
-      'columns' => 'username=:username, first_name=:first_name, last_name=:last_name, email=:email'
-    ];
     $table = $query['table'];
     $columns = $query['columns'];
     $sql = "INSERT INTO " . $table . " SET " . $columns;
@@ -84,12 +74,8 @@ class CrudRepository
    *
    * @return int The update ID
    */
-  public function update(array $data): int
+  public function update(array $query, array $data): int
   {
-    $query = [
-      'table' => 'users',
-      'columns' => 'username=:username, first_name=:first_name, last_name=:last_name, email=:email'
-    ];
     $table = $query['table'];
     $columns = $query['columns'];
     $sql = "UPDATE " . $table . " SET " . $columns . " WHERE id = :id";
@@ -105,11 +91,8 @@ class CrudRepository
    *
    * @return int The deleted ID
    */
-  public function delete($id): int
+  public function delete(array $query, int $id): int
   {
-    $query = [
-      'table' => 'users'
-    ];
     $table = $query['table'];
     $sql = "DELETE FROM " . $table . " WHERE id  = " . $id;
     $this->connection->prepare($sql)->execute();

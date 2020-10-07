@@ -31,10 +31,11 @@ final class CreatorService
    *
    * @return int The new data ID
    */
-  public function createData(array $data): int
+  public function createData(array $query, array $data): int
   {
     // Insert user
-    $userId = $this->repository->create($data);
+    //$this->repository->setQuery($query);
+    $userId = $this->repository->create($query, $data);
 
     return $userId;
   }

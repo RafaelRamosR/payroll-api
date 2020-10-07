@@ -31,10 +31,10 @@ final class UpdaterService
    *
    * @return int The last updated ID
    */
-  public function updateData(array $data): int
+  public function updateData(array $query, array $data): int
   {
     // Update field
-    $userId = $this->repository->update($data);
+    $userId = $this->repository->update($query, $data);
 
     return $userId;
   }

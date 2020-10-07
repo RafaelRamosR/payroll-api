@@ -31,10 +31,10 @@ final class DeletorService
    *
    * @return int The last deleted ID
    */
-  public function deleteData(int $data): int
+  public function deleteData(array $query, int $data): int
   {
     // Delete field
-    $userId = $this->repository->delete($data);
+    $userId = $this->repository->delete($query, $data);
 
     return $userId;
   }

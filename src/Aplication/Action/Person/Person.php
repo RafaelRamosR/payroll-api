@@ -21,6 +21,10 @@ final class Person
   private $reader;
   private $updater;
   private $deletor;
+  private $query = [
+    'table' => 'users', 
+    'columns' => 'username=:username, first_name=:first_name, last_name=:last_name, email=:email'
+  ];
 
   /**
    * The constructor.
@@ -48,7 +52,7 @@ final class Person
     $this->validateData($data);
 
     // Invoke the Domain with inputs and retain the result
-    $userId = $this->creator->createData($data);
+    $userId = $this->creator->createData($this->query, $data);
 
     // Transform the result into the JSON representation
     $result = [
@@ -70,7 +74,7 @@ final class Person
     $this->validate->alphanumeric($data, 1, 11);
 
     // Invoke the Domain with inputs and retain the result
-    $result = $this->reader->readData($data);
+    $result = $this->reader->readData($this->query, $data);
 
     // Build the HTTP response
     $response->getBody()->write((string)json_encode($result));
@@ -88,7 +92,7 @@ final class Person
     $this->validateData($data);
 
     // Invoke the Domain with inputs and retain the result
-    $userId = $this->updater->updateData($data);
+    $userId = $this->updater->updateData($this->query, $data);
 
     // Transform the result into the JSON representation
     $result = [
@@ -110,7 +114,7 @@ final class Person
     $this->validate->number($id, 1, 11);
 
     // Invoke the Domain with inputs and retain the result
-    $userId = $this->deletor->deleteData($id);
+    $userId = $this->deletor->deleteData($this->query, $id);
 
     // Transform the result into the JSON representation
     $result = [
