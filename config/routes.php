@@ -9,7 +9,7 @@ return function (App $app) {
     $path = \App\Aplication\Action\Person\Person::class;
     $group->post('', \App\Aplication\Action\Person\CreateAction::class);
     $group->get('/{data}', $path . ':readData');
-    $group->delete('/{id:[0-9]+}', $path . ':deleteData');
+    $group->delete('/{id:[0-9]+}', \App\Aplication\Action\Person\DeleteAction::class);
     $group->put('', \App\Aplication\Action\Person\UpdateAction::class);
   });
 };
