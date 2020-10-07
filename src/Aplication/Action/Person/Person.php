@@ -2,7 +2,6 @@
 
 namespace App\Aplication\Action\Person;
 
-use App\Domain\Service\CreatorService;
 use App\Domain\Service\ReaderService;
 use App\Domain\Service\UpdaterService;
 use App\Domain\Service\DeletorService;
@@ -17,11 +16,10 @@ final class Person
    * @var Validate
    */
   private $validate;
-  private $creator;
   private $reader;
   private $updater;
   private $deletor;
-  private $query = [
+  public $query = [
     'table' => 'users', 
     'columns' => 'username=:username, first_name=:first_name, last_name=:last_name, email=:email'
   ];
@@ -33,38 +31,14 @@ final class Person
    */
   public function __construct(
     Validate $validate,
-    CreatorService $creator,
     ReaderService $reader,
     UpdaterService $updater,
     DeletorService $deletor
   ) {
     $this->validate = $validate;
-    $this->creator = $creator;
     $this->reader = $reader;
     $this->updater = $updater;
     $this->deletor = $deletor;
-  }
-
-  public function createData(ServerRequestInterface $request, ResponseInterface $response)
-  {
-    // Collect input from the HTTP request
-    $data = (array)$request->getParsedBody();
-    $this->validateData($data);
-
-    // Invoke the Domain with inputs and retain the result
-    $userId = $this->creator->createData($this->query, $data);
-
-    // Transform the result into the JSON representation
-    $result = [
-      'user_id' => $userId
-    ];
-
-    // Build the HTTP response
-    $response->getBody()->write((string)json_encode($result));
-
-    return $response
-      ->withHeader('Content-Type', 'application/json')
-      ->withStatus(201);
   }
 
   public function readData(ServerRequestInterface $request, ResponseInterface $response, array $args)
@@ -129,7 +103,7 @@ final class Person
       ->withStatus(200);
   }
 
-  private function validateData(array $data)
+  public function validateData(array $data)
   {
     $errors = [];
 
