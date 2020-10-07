@@ -10,6 +10,6 @@ return function (App $app) {
     $group->post('', \App\Aplication\Action\Person\CreateAction::class);
     $group->get('/{data}', $path . ':readData');
     $group->delete('/{id:[0-9]+}', $path . ':deleteData');
-    $group->put('', $path . ':updateData');
+    $group->put('', \App\Aplication\Action\Person\UpdateAction::class);
   });
 };

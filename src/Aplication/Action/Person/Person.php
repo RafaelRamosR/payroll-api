@@ -3,7 +3,6 @@
 namespace App\Aplication\Action\Person;
 
 use App\Domain\Service\ReaderService;
-use App\Domain\Service\UpdaterService;
 use App\Domain\Service\DeletorService;
 use App\Aplication\lib\Validate;
 use App\Exception\ValidationException;
@@ -12,9 +11,6 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class Person
 {
-  /**
-   * @var Validate
-   */
   private $validate;
   private $reader;
   private $updater;
@@ -24,20 +20,13 @@ final class Person
     'columns' => 'username=:username, first_name=:first_name, last_name=:last_name, email=:email'
   ];
 
-  /**
-   * The constructor.
-   *
-   * @param Validate $validate The validate
-   */
   public function __construct(
     Validate $validate,
     ReaderService $reader,
-    UpdaterService $updater,
     DeletorService $deletor
   ) {
     $this->validate = $validate;
     $this->reader = $reader;
-    $this->updater = $updater;
     $this->deletor = $deletor;
   }
 
@@ -49,29 +38,6 @@ final class Person
 
     // Invoke the Domain with inputs and retain the result
     $result = $this->reader->readData($this->query, $data);
-
-    // Build the HTTP response
-    $response->getBody()->write((string)json_encode($result));
-
-    return $response
-      ->withHeader('Content-Type', 'application/json')
-      ->withStatus(200);
-  }
-
-  public function updateData(ServerRequestInterface $request, ResponseInterface $response)
-  {
-    // Collect input from the HTTP request
-    $data = (array)$request->getParsedBody();
-    $this->validate->number($data['id'], 1, 11);
-    $this->validateData($data);
-
-    // Invoke the Domain with inputs and retain the result
-    $userId = $this->updater->updateData($this->query, $data);
-
-    // Transform the result into the JSON representation
-    $result = [
-      'user_id' => $userId
-    ];
 
     // Build the HTTP response
     $response->getBody()->write((string)json_encode($result));
@@ -106,6 +72,9 @@ final class Person
   public function validateData(array $data)
   {
     $errors = [];
+    if ($data['id'] && !$this->validate->obligatory($data['id'])) {
+      $errors['id'] = 'Input required';
+    }
 
     if (!$this->validate->obligatory($data['username'])) {
       $errors['username'] = 'Input required';
