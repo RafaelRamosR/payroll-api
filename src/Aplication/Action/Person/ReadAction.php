@@ -2,19 +2,19 @@
 
 namespace App\Aplication\Action\Person;
 
-use App\Domain\Service\DeletorService;
+use App\Domain\Service\ReaderService;
 use App\Aplication\Action\Person\Person;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-final class DeleteAction
+final class ReadAction
 {
-  private $deletorService;
+  private $readerService;
   private $person;
 
-  public function __construct(DeletorService $deletorService, Person $person)
+  public function __construct(ReaderService $readerService, Person $person)
   {
-    $this->deletorService = $deletorService;
+    $this->readerService = $readerService;
     $this->person = $person;
   }
 
@@ -24,11 +24,11 @@ final class DeleteAction
     array $args
   ): ResponseInterface {
     // Collect input from the arguments array
-    $id = $args['id'];
-    $this->person->validateId($id);
+    $data = $args['data'];
     $query = $this->person->query;
 
-    $result = $this->deletorService->deleteData($query, $id);
+    // Invoke the Domain with inputs and retain the result
+    $result = $this->readerService->readData($query, $data);
 
     $res->getBody()->write((string)json_encode($result));
     return $res->withHeader('Content-Type', 'application/json')->withStatus(200);

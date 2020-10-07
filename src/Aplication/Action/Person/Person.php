@@ -11,35 +11,14 @@ use Psr\Http\Message\ServerRequestInterface;
 final class Person
 {
   private $validate;
-  private $reader;
   public $query = [
-    'table' => 'users', 
+    'table' => 'users',
     'columns' => 'username=:username, first_name=:first_name, last_name=:last_name, email=:email'
   ];
 
-  public function __construct(
-    Validate $validate,
-    ReaderService $reader
-  ) {
-    $this->validate = $validate;
-    $this->reader = $reader;
-  }
-
-  public function readData(ServerRequestInterface $request, ResponseInterface $response, array $args)
+  public function __construct(Validate $validate)
   {
-    // Collect input from the arguments array
-    $data = $args['data'];
-    $this->validate->alphanumeric($data, 1, 11);
-
-    // Invoke the Domain with inputs and retain the result
-    $result = $this->reader->readData($this->query, $data);
-
-    // Build the HTTP response
-    $response->getBody()->write((string)json_encode($result));
-
-    return $response
-      ->withHeader('Content-Type', 'application/json')
-      ->withStatus(200);
+    $this->validate = $validate;
   }
 
   public function validateData(array $data)
