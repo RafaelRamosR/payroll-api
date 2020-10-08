@@ -2,11 +2,8 @@
 
 namespace App\Aplication\Action\Person;
 
-use App\Domain\Service\ReaderService;
 use App\Aplication\lib\Validate;
 use App\Exception\ValidationException;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 final class Person
 {
