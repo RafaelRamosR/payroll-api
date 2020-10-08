@@ -31,13 +31,21 @@ final class ReaderService
    *
    * @return int The new user ID
    */
-  public function readData(array $query, string $data):array
+  public function readData(array $query, string $data): array
   {
     // Get all or a single field
-    $userId = $data === 'all' 
-    ? $this->repository->getListAll($query) 
-    : $userId = $this->repository->getListOne($query, $data);
+    switch ($data) {
+      case 'all':
+        $result = $this->repository->getListAll($query);
+        break;
+      case 'details':
+        $result = $this->repository->getListWithDetails($query);
+        break;
+      default:
+        $result = $this->repository->getListOne($query, $data);
+        break;
+    }
 
-    return $userId;
+    return $result;
   }
 }

@@ -10,7 +10,10 @@ final class PersonPet
   private $validate;
   public $query = [
     "table" => "user_pets",
-    "columns" => "id_user=:id_user, id_pet=:id_pet"
+    "columns" => "id_user=:id_user, id_pet=:id_pet",
+    "mergedColumns" => "user_pets.id, CONCAT_WS(' ', u.first_name, u.last_name) AS name, p.name AS pet",
+    "join" => "INNER JOIN users u ON user_pets.id_user = u.id INNER JOIN pets p ON user_pets.id_pet = p.id",
+    "condition" => ""
   ];
 
   public function __construct(Validate $validate)

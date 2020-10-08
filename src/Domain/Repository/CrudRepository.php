@@ -52,6 +52,23 @@ class CrudRepository
   }
 
   /**
+   * Select all rows.
+   *
+   * @return array Array with all table data
+   */
+  public function getListWithDetails($query): array
+  {
+    $table = $query['table'];
+    $columns = $query['mergedColumns'];
+    $join = $query['join'];
+    $condition = $query['condition'];
+    $sql = "SELECT $columns FROM $table $join WHERE TRUE $condition";
+    $stmt = $this->connection->prepare($sql);
+    $stmt->execute();
+    return (array)$stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  /**
    * Insert row.
    *
    * @param array $data Values to insert
